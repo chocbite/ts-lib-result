@@ -1,6 +1,6 @@
 # @chocbite/ts-lib-result
 
-Rust-like `Result` and `Option` types for TypeScript — lightweight, fully typed, zero dependencies.
+Rust-like `Result` and `Option` types for TypeScript.
 
 ## Install
 
@@ -43,8 +43,8 @@ A `Result<T, E>` represents either success (`ResultOk<T>`) or failure (`ResultEr
 ```typescript
 import { ok, err } from "@chocbite/ts-lib-result";
 
-const success = ok(42);       // ResultOk<number>
-const failure = err("oops");  // ResultErr<string>
+const success = ok(42); // ResultOk<number>
+const failure = err("oops"); // ResultErr<string>
 ```
 
 ### Properties
@@ -77,7 +77,7 @@ function handle(r: Result<number, string>) {
 Returns the value. Throws if the result is an error.
 
 ```typescript
-ok(42).unwrap();  // 42
+ok(42).unwrap(); // 42
 err("e").unwrap(); // throws
 ```
 
@@ -86,7 +86,7 @@ err("e").unwrap(); // throws
 Returns the value, or the provided default if the result is an error.
 
 ```typescript
-ok(42).unwrap_or(0);  // 42
+ok(42).unwrap_or(0); // 42
 err("e").unwrap_or(0); // 0
 ```
 
@@ -95,8 +95,8 @@ err("e").unwrap_or(0); // 0
 Returns the error. Throws if the result is ok.
 
 ```typescript
-err("e").unwrap_err();  // "e"
-ok(42).unwrap_err();    // throws
+err("e").unwrap_err(); // "e"
+ok(42).unwrap_err(); // throws
 ```
 
 #### `unwrap_err_or<E2>(error: E2): E | E2`
@@ -104,8 +104,8 @@ ok(42).unwrap_err();    // throws
 Returns the error, or the provided default if the result is ok.
 
 ```typescript
-err("e").unwrap_err_or("default");  // "e"
-ok(42).unwrap_err_or("default");    // "default"
+err("e").unwrap_err_or("default"); // "e"
+ok(42).unwrap_err_or("default"); // "default"
 ```
 
 #### `expect(msg: string): T`
@@ -113,7 +113,7 @@ ok(42).unwrap_err_or("default");    // "default"
 Returns the value. Throws with the given message if the result is an error.
 
 ```typescript
-ok(42).expect("should exist");  // 42
+ok(42).expect("should exist"); // 42
 err("e").expect("should exist"); // throws "should exist"
 ```
 
@@ -123,7 +123,7 @@ Returns the error. Throws with the given message if the result is ok.
 
 ```typescript
 err("e").expect_err("should fail"); // "e"
-ok(42).expect_err("should fail");   // throws "should fail"
+ok(42).expect_err("should fail"); // throws "should fail"
 ```
 
 #### `and_then<T2, E2>(mapper: (value: T) => Result<T2, E2>): Result<T2, E2>`
@@ -135,8 +135,7 @@ ok(2)
   .and_then((v) => ok(v * 10))
   .unwrap(); // 20
 
-err("e")
-  .and_then((v) => ok(v * 10)); // Err("e")
+err("e").and_then((v) => ok(v * 10)); // Err("e")
 ```
 
 #### `or_else<T2, E2>(mapper: (error: E) => Result<T2, E2>): Result<T2, E2>`
@@ -158,8 +157,10 @@ ok(42)
 Transforms the ok value with `mapper`, leaving errors untouched.
 
 ```typescript
-ok(2).map((v) => v * 10).unwrap(); // 20
-err("e").map((v) => v * 10);       // Err("e")
+ok(2)
+  .map((v) => v * 10)
+  .unwrap(); // 20
+err("e").map((v) => v * 10); // Err("e")
 ```
 
 #### `map_err<F>(mapper: (error: E) => F): Result<T, F>`
@@ -167,8 +168,10 @@ err("e").map((v) => v * 10);       // Err("e")
 Transforms the error with `mapper`, leaving ok values untouched.
 
 ```typescript
-err("e").map_err((e) => e.toUpperCase()).unwrap_err(); // "E"
-ok(42).map_err((e) => e.toUpperCase());                // Ok(42)
+err("e")
+  .map_err((e) => e.toUpperCase())
+  .unwrap_err(); // "E"
+ok(42).map_err((e) => e.toUpperCase()); // Ok(42)
 ```
 
 #### `compare(other: Result<T, E>): boolean`
@@ -176,9 +179,9 @@ ok(42).map_err((e) => e.toUpperCase());                // Ok(42)
 Compares two results for equality by value.
 
 ```typescript
-ok(1).compare(ok(1));   // true
-ok(1).compare(ok(2));   // false
-ok(1).compare(err(1));  // false
+ok(1).compare(ok(1)); // true
+ok(1).compare(ok(2)); // false
+ok(1).compare(err(1)); // false
 ```
 
 #### `to_option(): Option<T>`
@@ -186,7 +189,7 @@ ok(1).compare(err(1));  // false
 Converts to an `Option`, discarding the error if any.
 
 ```typescript
-ok(42).to_option();  // Some(42)
+ok(42).to_option(); // Some(42)
 err("e").to_option(); // None
 ```
 
@@ -199,8 +202,8 @@ An `Option<T>` represents either a value (`OptionSome<T>`) or no value (`OptionN
 ```typescript
 import { some, none } from "@chocbite/ts-lib-result";
 
-const value   = some(42); // OptionSome<number>
-const nothing = none();   // OptionNone
+const value = some(42); // OptionSome<number>
+const nothing = none(); // OptionNone
 ```
 
 ### Properties
@@ -229,7 +232,7 @@ Returns the value. Throws if the option is none.
 
 ```typescript
 some(42).unwrap(); // 42
-none().unwrap();   // throws
+none().unwrap(); // throws
 ```
 
 #### `unwrap_or<T2>(value: T2): T | T2`
@@ -238,7 +241,7 @@ Returns the value, or the provided default if the option is none.
 
 ```typescript
 some(42).unwrap_or(0); // 42
-none().unwrap_or(0);   // 0
+none().unwrap_or(0); // 0
 ```
 
 #### `expect(msg: string): T`
@@ -247,7 +250,7 @@ Returns the value. Throws with the given message if the option is none.
 
 ```typescript
 some(42).expect("missing"); // 42
-none().expect("missing");   // throws "missing"
+none().expect("missing"); // throws "missing"
 ```
 
 #### `and_then<T2>(mapper: (value: T) => Option<T2>): Option<T2>`
@@ -255,8 +258,10 @@ none().expect("missing");   // throws "missing"
 Calls `mapper` if the option is some, otherwise returns none.
 
 ```typescript
-some(2).and_then((v) => some(v * 10)).unwrap(); // 20
-none().and_then((v) => some(v * 10));           // None
+some(2)
+  .and_then((v) => some(v * 10))
+  .unwrap(); // 20
+none().and_then((v) => some(v * 10)); // None
 ```
 
 #### `or_else<T2>(mapper: () => Option<T2>): Option<T2>`
@@ -264,8 +269,12 @@ none().and_then((v) => some(v * 10));           // None
 Calls `mapper` if the option is none, otherwise returns the value unchanged.
 
 ```typescript
-none().or_else(() => some(0)).unwrap(); // 0
-some(42).or_else(() => some(0)).unwrap(); // 42
+none()
+  .or_else(() => some(0))
+  .unwrap(); // 0
+some(42)
+  .or_else(() => some(0))
+  .unwrap(); // 42
 ```
 
 #### `map<U>(mapper: (value: T) => U): Option<U>`
@@ -273,8 +282,10 @@ some(42).or_else(() => some(0)).unwrap(); // 42
 Transforms the value with `mapper`, leaving none untouched.
 
 ```typescript
-some(2).map((v) => v * 10).unwrap(); // 20
-none().map((v) => v * 10);           // None
+some(2)
+  .map((v) => v * 10)
+  .unwrap(); // 20
+none().map((v) => v * 10); // None
 ```
 
 #### `compare(other: Option<T>): boolean`
@@ -283,8 +294,8 @@ Compares two options for equality by value.
 
 ```typescript
 some(1).compare(some(1)); // true
-some(1).compare(none());  // false
-none().compare(none());   // true
+some(1).compare(none()); // false
+none().compare(none()); // true
 ```
 
 #### `to_result<E>(error: E): Result<T, E>`
@@ -293,7 +304,7 @@ Converts to a `Result`, using the provided error if the option is none.
 
 ```typescript
 some(42).to_result("err"); // Ok(42)
-none().to_result("err");   // Err("err")
+none().to_result("err"); // Err("err")
 ```
 
 ## Type Helpers
@@ -309,11 +320,11 @@ import type {
 
 type MyResult = Result<number, string>;
 
-type T = ResultInferOk<MyResult>;  // number
+type T = ResultInferOk<MyResult>; // number
 type E = ResultInferErr<MyResult>; // string
 
 type MyOption = Option<number>;
-type V = OptionInfer<MyOption>;    // number
+type V = OptionInfer<MyOption>; // number
 ```
 
 ## Type Guards
@@ -321,7 +332,7 @@ type V = OptionInfer<MyOption>;    // number
 ```typescript
 import result from "@chocbite/ts-lib-result";
 
-result.is_result(ok(1));   // true
+result.is_result(ok(1)); // true
 result.is_option(some(1)); // true
 ```
 
